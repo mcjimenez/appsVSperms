@@ -20,9 +20,9 @@ var Config = {
     '4': 'NONE',
     appPermError: '****'
   },
-  gaiaAppsDir: ['/home/cjc/dev/gaiaMASTER/apps', '/home/cjc/dev/gaiaMASTER/outoftree_apps'],
+  gaiaAppsDir: ['/home/cjc/dev/gaiaDEV/apps', '/home/cjc/dev/gaiaDEV/outoftree_apps'],
   csv: {
-    out: '/tmp/appsVSpermissions.csv',
+    out: '/tmp/appsVSperms.csv',
     sep: ';'
   },
   google: {

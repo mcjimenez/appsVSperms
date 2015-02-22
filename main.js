@@ -3,6 +3,7 @@
 var Config = require('./config.js');
 var Spreadsheets = require('./spreadsheets.js');
 var options = require('./options.js');
+var google = require('./googleSpreadsheet.js');
 
 if (options.args.help) {
   console.log('Usage: node ' + options.name + ' [options]');
@@ -15,7 +16,7 @@ if (options.args.help) {
   return;
 }
 
-var spreadsheets = new Spreadsheets(Config, options.args.tables);
+//var spreadsheets = new Spreadsheets(Config, options.args.tables);
 
-spreadsheets.getCsv();
+//spreadsheets.getCsv();
 
