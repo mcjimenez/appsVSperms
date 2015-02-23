@@ -189,6 +189,8 @@ function fillXLSXHead1(sheet) {
   var h1Align = config.xlsx.sheet1.hd1Align;
   var h1Font = config.xlsx.sheet1.hd1Font;
   var h2Border = config.xlsx.sheet1.hd2Border;
+  var h2BorderLst = config.xlsx.sheet1.hd2BorderLst;
+  var h2BorderFst = config.xlsx.sheet1.hd2BorderFst;
   var h2Valign = config.xlsx.sheet1.hd2Valign;
   var h2Align = config.xlsx.sheet1.hd2Align;
   var h2Font = config.xlsx.sheet1.hd2Font;
@@ -214,35 +216,15 @@ function fillXLSXHead1(sheet) {
       sheet.valign(col + h2, 2, h2Valign);
       sheet.align(col + h2, 2, h2Align);
       sheet.rotate(col + h2, 2, 90);
-      sheet.border(col + h2, 2, h2Border);
+      sheet.border(col + h2, 2,
+        h2 === 0 ? h2BorderFst: h2 === perms.length - 1 ? h2BorderLst: h2Border);
+
       sheet.fill(col + h2, 2, h2Color);
       sheet.border(col + h2, 1, h1Border);
     }
     if (h1 < l - 1) {
       col += types['' + h1].length;
     }
-  }
-}
-
-function fillXLSXHead2(sheet) {
-  var maxColWidth = 0;
-
-  var border = config.xlsx.sheet2.hdBorder;
-  var align = config.xlsx.sheet2.hdAlign;
-  var font =  config.xlsx.sheet2.hdFont;
-
-  for (var i = 0, l = Object.keys(types).length; i < l; i++) {
-    if (config.show['' + i].length > maxColWidth) {
-      maxColWidth = config.show['' + i].length;
-    }
-    sheet.set(i + 2, 1, config.show['' + i]);
-    sheet.font(i + 2, 1, font);
-    sheet.border(i + 2, 1, border);
-    sheet.align(i + 2, 1, align);
-  }
-
-  for (i = 0; i < l; i++) {
-    sheet.width(i + 2, maxColWidth + config.xlsx.txtOverflow);
   }
 }
 
@@ -274,6 +256,29 @@ function fillXLSXBody1(sheet) {
   sheet.width(1, maxAppLength + config.xlsx.txtOverflow);
 }
 
+function fillXLSXHead2(sheet) {
+  var maxColWidth = 0;
+
+  var border = config.xlsx.sheet2.hdBorder;
+  var align = config.xlsx.sheet2.hdAlign;
+  var font =  config.xlsx.sheet2.hdFont;
+  var color = config.xlsx.sheet2.hdColor;
+  for (var i = 0, l = Object.keys(types).length - 1; i < l; i++) {
+    if (config.show['' + i].length > maxColWidth) {
+      maxColWidth = config.show['' + i].length;
+    }
+    sheet.set(i + 2, 1, config.show['' + i]);
+    sheet.font(i + 2, 1, font);
+    sheet.border(i + 2, 1, border);
+    sheet.align(i + 2, 1, align);
+    sheet.fill(i + 2, 1, color);
+  }
+
+  for (i = 0; i < l; i++) {
+    sheet.width(i + 2, maxColWidth + config.xlsx.txtOverflow);
+  }
+}
+
 function fillXLSXBody2(sheet) {
   var row = 2;
   var maxPrmLength = 0;
@@ -283,6 +288,7 @@ function fillXLSXBody2(sheet) {
   var align = config.xlsx.sheet2.bdyAlign;
   var hdFont =  config.xlsx.sheet2.hdFont;
   var bdyFont =  config.xlsx.sheet2.bdyFont;
+  var bdyColor = config.xlsx.sheet2.bdyColor;
 
   for (var prm in permissions) {
     if (prm.length > maxPrmLength) {
@@ -290,6 +296,7 @@ function fillXLSXBody2(sheet) {
     }
     sheet.set(1, row, prm);
     sheet.font(1, row, hdFont);
+    sheet.fill(1, row, bdyColor);
     sheet.set(2, row, getSymbol(permissions[prm].app, true));
     sheet.set(3, row, getSymbol(permissions[prm].trusted, true));
     sheet.set(4, row, getSymbol(permissions[prm].privileged, true));
