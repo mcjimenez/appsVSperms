@@ -27,8 +27,16 @@ All information in two table and XLSX format by default
 
 ## Prerequisites
 
-We need msexcel-builder package
+appsVSperm needs msexcel-builder package
 
 ```
-npm install msexcel-builder
+$ npm install msexcel-builder
 ```
+
+appsVSperm needs gaia Repo
+
+```
+$ cd <directory where_gaia_will_be_cloned>
+$ git clone https://github.com/mozilla-b2g/gaia.git
+```
+

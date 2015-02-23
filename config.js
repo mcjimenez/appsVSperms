@@ -17,11 +17,11 @@ var Config = {
     promptLng: 'Prompt',
     denyLng: 'Deny',
     unknownLng: 'Unknown',
-    '0': 'HOSTED',
-    '1': 'TH',
-    '2': 'PRIVILEGED',
-    '3': 'CERTIFIED',
-    '4': 'NONE',
+    '0': 'Hosted',
+    '1': 'Trusted H.',
+    '2': 'Privileged',
+    '3': 'Certified',
+    '4': 'None',
     appPermError: '****'
   },
   gaiaAppsDir: ['/home/cjc/dev/gaiaDEV/apps', '/home/cjc/dev/gaiaDEV/outoftree_apps'],
@@ -30,41 +30,56 @@ var Config = {
     sep: ';'
   },
   xlsx: {
-    path: '/home/cjc/tmp/dani/pruebas',
-    name: 'miAppsVSperms.xlsx',
-    sheet1Name: 'appsVSperms',
-    sheet2Name: 'permsVSWay',
-    '0': {
-      'h1_fgColor': '00000000',
-      'h1_bgColor': 'FFFF0000',
-      'h2_fgColor': 'red',
-      'h2_bgColor': 'yellow'
+    path: '/tmp',
+    name: 'appsVSperms.xlsx',
+    sheet1: {
+      name: 'appsVSperms',
+      shortCellWidth: 4,
+      longCellWidth: 6,
+      hd1Align: 'center',
+      hd1Border: {top: 'double', left: 'thin', right: 'thin'},
+      hd1font: {name: 'Calibri', sz: '13', family: '2', scheme: 'minor'},
+      hd2Valign: 'bottom',
+      hd2Align: 'center',
+      hd2Border: {bottom: 'double'},
+      hd2font: {name: 'Calibri', sz: '12', family: '2', scheme: 'minor'},
+      bdyAlign: 'center',
+      bdyBorder: {left: 'thin', right: 'thin', bottom: 'thin'},
+      bdyfont: {name: 'Calibri', sz: '9', family: '2', scheme: 'minor'},
+      '0': {
+        'h1Color': {'type': 'solid', 'fgColor': '60', 'bgColor': '60'},
+        'h2Color': {'type': 'solid', 'fgColor': '61', 'bgColor': '8'}
+      },
+      '1': {
+        'h1Color': {'type': 'solid', 'fgColor': '64', 'bgColor': '8'},
+        'h2Color': {'type': 'solid', 'fgColor': '65', 'bgColor': '8'}
+      },
+      '2': {
+        'h1Color': {'type': 'solid', 'fgColor': '62', 'bgColor': '8'},
+        'h2Color': {'type': 'solid', 'fgColor': '63', 'bgColor': '8'}
+      },
+      '3': {
+        'h1Color': {'type': 'solid', 'fgColor': '64', 'bgColor': '8'},
+        'h2Color': {'type': 'solid', 'fgColor': '67', 'bgColor': '8'}
+      },
+      '4': {
+        'h1Color': {'type': 'solid', 'fgColor': '65', 'bgColor': '8'},
+        'h2Color': {'type': 'solid', 'fgColor': '66', 'bgColor': '8'}
+      }
     },
-    '1': {
-      'h1_fgColor': 'FFFF0000',
-      'h1_bgColor': '00000000',
-      'h2_fgColor': '8',
-      'h2_bgColor': '64'
+    sheet2: {
+      name: 'permsVSWay',
+      hdAlign: 'center',
+      hdBorder: {},
+      bdyAlign: 'center',
+      bdyBorder: {left: 'thin', top: 'thin', right: 'thin', bottom: 'thin'},
+      hdFont: {name: 'Calibri', sz: '13', family: '2', scheme: 'minor'},
+      bdyFont: {name: 'Calibri', sz:'10', family:'2', scheme:'minor'},
+      hdColor: {'type': 'solid', 'fgColor': '8', 'bgColor': '64'},
+      BdyColor: {'type': 'solid', 'fgColor': '0', 'bgColor': '255'}
     },
-    '2': {
-      'h1_fgColor': '155187089',
-      'h1_bgColor': '20',
-      'h2_fgColor': '8',
-      'h2_bgColor': '64'
-    },
-    '3': {
-      'h1_fgColor': '50',
-      'h1_bgColor': '100',
-      'h2_fgColor': '8',
-      'h2_bgColor': '64'
-    },
-    '4': {
-      'h1_fgColor': '8',
-      'h1_bgColor': '64',
-      'h2_fgColor': '8',
-      'h2_bgColor': '64'
-    }
- }
+    txtOverflow: 2
+  }
 };
 
 module.exports = Config;

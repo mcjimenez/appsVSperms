@@ -5,8 +5,10 @@ var XLSX_FORMAT = 'xlsx';
 
 //remove node
 process.argv.shift();
+
 //get program name
 var name = process.argv.shift();
+
 var argsArr = process.argv;
 var args = {
   help: false
@@ -45,4 +47,4 @@ module.exports = {
   args: args,
   CSV_FORMAT: CSV_FORMAT,
   XLSX_FORMAT: XLSX_FORMAT
-}
+};
