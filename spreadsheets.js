@@ -3,8 +3,9 @@
 var https = require ('https');
 var fs = require('fs');
 var path = require('path');
-
 var EOL = require('os').EOL;
+
+var ExcelBuilder = null;
 
 var prmTable = null;
 var config = null;
@@ -52,19 +53,20 @@ function createPermissionsTableModule(cbk) {
   });
 }
 
-function getSymbol(value) {
+function getSymbol(value, lngFmt) {
   switch(value) {
     case prmTable.ALLOW_ACTION:
-      return config.show.allow;
+      return lngFmt && config.show.allowLng || config.show.allow;
       break;
     case prmTable.PROMPT_ACTION:
-      return config.show.prompt;
+      return lngFmt && config.show.promptLng || config.show.prompt;
       break;
     case prmTable.DENY_ACTION:
-      return config.show.deny;
+      return lngFmt && config.show.denyLng || config.show.deny;
       break;
     default:
-      return config.show.unknow;
+      return lngFmt && config.show.unknownLng || config.show.unknown;
+      return config.show.unknown;
   }
 }
 
@@ -95,7 +97,7 @@ function createHeaders() {
 function addApps() {
   var proccessApp = function(dir, err, files) {
     if (err) {
-      console.log('Error proccessing Gaia Apps:' + err);
+      console.error('Error proccessing Gaia Apps:' + err);
       return;
     }
     files.forEach(function(file) {
@@ -112,7 +114,7 @@ function addApps() {
           }
         }
       } catch (e) {
-        console.log('Error accesing ' + manifestDir + ':' + e);
+        console.error('Error accesing ' + manifestDir + ':' + e);
       }
     });
   };
@@ -159,7 +161,7 @@ function writeCSVBody(wStream) {
     line = app + sep;
     sortedPerms.forEach(function(perm) {
       if (apps[app].indexOf(perm) >= 0) {
-        line += nTables > 1 && permissions[perm].target || config.show.checked;
+        line += nTables === 1 && permissions[perm].target || config.show.checked;
       }
       line += sep;
     });
@@ -184,17 +186,121 @@ function generateCsv() {
   wStream.end();
 }
 
+function fillXLSXHead1(sheet) {
+  sortedPerms = [];
+  // First column number is 1 (not 0) and App name is in column 1
+  // so first permission column is 2
+  var col = 2;
+  for (var h1 = 0, l = Object.keys(types).length; h1 < l; h1++) {
+    var perms = types['' + h1];
+    sortedPerms = sortedPerms.concat(types['' + h1]);
+    var shw = config.xlsx['' + h1];
+    sheet.set(col, 1, config.show['' + h1]);
+    sheet.merge({col: col, row: 1}, {col: (col + perms.length - 1), row: 1});
+    sheet.fill(col, 1, {fgColor: shw.h1_fgColor, bgColor: shw.h1_bgColor});
+    for (var h2 = 0, lH2 = perms.length; h2 < lH2; h2++) {
+      sheet.set(col + h2, 2, perms[h2]);
+      sheet.valign(col + h2, 2, 'bottom');
+      sheet.rotate(col + h2, 2, 90);
+      sheet.fill(col + h2, 2, {fgColor: shw.h2_fgColor, bgColor: shw.h2_bgColor});
+      //sheet.border(col + h2, 2, {left:'medium',top:'medium',right:'thin', bottom:'medium'});
+    }
+    if (h1 < l - 1) {
+      col += types['' + h1].length;
+    }
+  }
+}
+
+function fillXLSXHead2(sheet) {
+  for (var i = 0, l = Object.keys(types).length; i < l; i++) {
+    sheet.set(i + 2, 1, config.show['' + i]);
+  }
+}
+
+function fillXLSXBody1(sheet) {
+  var row = 3;
+  var checked = nTables === 2 && config.show.checked || undefined;
+
+  for (var app in apps) {
+    sheet.set(1, row, app);
+    for (var i = 0, l = sortedPerms.length; i < l; i++) {
+      sheet.border(i + 2, row, {left:'thin',top:'thin',right:'thin', bottom:'thin'});
+      if (apps[app].indexOf(sortedPerms[i]) >= 0) {
+        sheet.set(i + 2, row,
+                  checked || permissions[sortedPerms[i]].target);
+      }
+    };
+    row += 1;
+  }
+}
+
+function fillXLSXBody2(sheet) {
+  var row = 2;
+  var permissions = prmTable.permissionsTable;
+  for (var prm in permissions) {
+    sheet.set(1, row, prm);
+    sheet.set(2, row, getSymbol(permissions[prm].app, true));
+    sheet.set(3, row, getSymbol(permissions[prm].trusted, true));
+    sheet.set(4, row, getSymbol(permissions[prm].privileged, true));
+    sheet.set(5, row, getSymbol(permissions[prm].certified, true));
+    sheet.border(1, row, {left:'thin',top:'thin',right:'thin', bottom:'thin'});
+    sheet.border(2, row, {left:'thin',top:'thin',right:'thin', bottom:'thin'});
+    sheet.border(3, row, {left:'thin',top:'thin',right:'thin', bottom:'thin'});
+    sheet.border(4, row, {left:'thin',top:'thin',right:'thin', bottom:'thin'});
+    sheet.border(5, row, {left:'thin',top:'thin',right:'thin', bottom:'thin'});
+    row += 1;
+  }
+}
+
+function generateXlsx() {
+  var excelbuilder = require('msexcel-builder');
+
+  var xlsx = config.xlsx;
+  var workbook = excelbuilder.createWorkbook(xlsx.path,
+                                             xlsx.name);
+
+
+  var sheet1 = workbook.createSheet(xlsx.sheet1Name,
+                                    Object.keys(permissions).length + 1,
+                                    Object.keys(apps).length + 2);
+
+  fillXLSXHead1(sheet1);
+  fillXLSXBody1(sheet1);
+
+  if (nTables === 2) {
+    var sheet2 = workbook.createSheet(xlsx.sheet2Name, 6,
+                             Object.keys(prmTable.permissionsTable).length + 1);
+    fillXLSXHead2(sheet2);
+    fillXLSXBody2(sheet2);
+  }
+
+  workbook.save(function(ok) {
+    if (!ok) {
+      workbook.cancel();
+    } else {
+      console.log('Excel file created');
+    }
+  });
+}
+
 function Spreadsheets(cnf, tables) {
   nTables = tables || 1;
   config = cnf;
 };
 
 Spreadsheets.prototype = {
-  getCsv: function() {
+  createCsv: function() {
     if (!initialized) {
       init(generateCsv);
     } else {
       generateCsv();
+    }
+  },
+  createXlsx: function() {
+    if (!initialized) {
+      init(generateXlsx);
+    } else {
+      generateXlsx();
     }
   }
 };

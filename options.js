@@ -1,5 +1,8 @@
 'use strict';
 
+var CSV_FORMAT = 'csv';
+var XLSX_FORMAT = 'xlsx';
+
 //remove node
 process.argv.shift();
 //get program name
@@ -14,19 +17,32 @@ argsArr.forEach(function(v) {
   if (value === '-h' || value === '--h' || value === '--help') {
     args.help = true;
   }
-  if (value === '--one' && !args.tables) {
+
+  if (value === '--onesheet' || value === 'onesheet' ||
+      value === 'one' || value === '--one') {
     args.tables = 1;
   }
-  if (value === '--two' && !args.tables) {
+
+  if (!args.tables &&
+      (value === '--twosheet' || value === 'twosheet' ||
+       value === 'two' || value === '--two')) {
     args.tables = 2;
+  }
+
+  if (value === 'csv' || value === '--csv') {
+    args.format = CSV_FORMAT;
+  } else {
+    args.format = XLSX_FORMAT;
   }
 });
 
 if (!args.tables) {
-  args.tables = 1;
+  args.tables = 2;
 }
 
 module.exports = {
   name: name,
-  args: args
+  args: args,
+  CSV_FORMAT: CSV_FORMAT,
+  XLSX_FORMAT: XLSX_FORMAT
 }
