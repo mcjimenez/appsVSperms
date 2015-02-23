@@ -1,0 +1,22 @@
+{
+  "name": "appsVSperms",
+  "version": "0.1.0",
+  "author": "Carmen Jiménez Cabezas",
+  "description": "Generate a table with FirefoxOS apps versus permissions requested",
+  "contributors": [{
+    "name": "Carmen Jimenez Cabezas",
+    "email": "carmen.jimenezcabezas@telefonica.com"
+  }],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcjimenez/appsVSperms"
+  },
+  "dependencies": {
+    "msexcel-builder": "0.0.*",
+  },
+  "license": "",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "main": "main.js"
+}
