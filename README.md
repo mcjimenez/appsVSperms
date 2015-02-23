@@ -3,6 +3,7 @@
 Usage: node main.js [options]
 
 options:
+
    --h | --help: Show help
    --oneSheet | --one | one: Show information in one table
       each cell contains four letters which symbolise App, Trusted, Privileged,
