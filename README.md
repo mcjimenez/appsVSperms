@@ -1,6 +1,10 @@
 # appsVSperms
 
-Usage: node main.js [options]
+## Usage
+
+```
+$ node main.js [options]
+```
 
 options:
 
@@ -20,3 +24,11 @@ options:
 
 
 All information in two table and XLSX format by default
+
+## Prerequisites
+
+We need msexcel-builder package
+
+```
+npm install msexcel-builder
+```
