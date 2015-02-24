@@ -77,7 +77,7 @@ var Config = {
       }
     },
     sheet2: {
-      name: 'permsVSWay',
+      name: 'permsVSpromptLvl',
       hdAlign: 'center',
       hdBorder: {left: 'thin', top: 'double', right: 'thin', bottom: 'double'},
       bdyAlign: 'center',
