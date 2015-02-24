@@ -26,13 +26,13 @@ var Config = {
     '5': 'Error',
     appPermError: '****'
   },
-  gaiaAppsDir: ['/home/cjc/dev/gaiaMASTER/apps', '/home/cjc/dev/gaiaMASTER/outoftree_apps'],
+  gaiaAppsDir: ['/home/mcjimenez/dev/gaia/apps', '/home/mcjimenez/dev/gaia/outoftree_apps'],
   csv: {
-    out: '/home/cjc/tmp/dani/pruebas/appsVSperms.csv',
+    out: '/home/mcjimenex/tmp/dani/pruebas/appsVSperms.csv',
     sep: ';'
   },
   xlsx: {
-    path: '/tmp',
+    path: '/media/sf_TEMP/excel',
     name: 'appsVSperms.xlsx',
     sheet1: {
       name: 'appsVSperms',
@@ -53,27 +53,27 @@ var Config = {
       bdyColorFst: {'type': 'solid', 'fgColor': { rgb: 'FFDDD9C4' }, 'bgColor': { rgb: 'FFFFFFFF' }},
       '0': {
         'h1Color': {'type': 'solid', 'fgColor': { rgb: 'FF9BBB59' }, 'bgColor': { rgb: 'FFFFFFFF' }},
-        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFCCFFCC' }, 'bgColor': '64'}
+        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFCCFFCC' }, 'bgColor': { indexed: '64' }}
       },
       '1': {
         'h1Color': {'type': 'solid', 'fgColor': { rgb: 'FF7981BD' }, 'bgColor': { rgb: 'FFFFFFFF' }},
-        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFBBDEE8' }, 'bgColor': '64'}
+        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFBBDEE8' }, 'bgColor': { indexed: '64' }}
       },
       '2': {
         'h1Color': {'type': 'solid', 'fgColor': { rgb: 'FFE26B0A' }, 'bgColor': { rgb: 'FFFFFFFF' }},
-        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFFABF8F' }, 'bgColor': '64'}
+        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFFABF8F' }, 'bgColor': { indexed: '64' }}
       },
       '3': {
         'h1Color': {'type': 'solid', 'fgColor': { rgb: 'FF632523' }, 'bgColor': { rgb: 'FFFFFFFF' }},
-        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFE6B8B7' }, 'bgColor': '64'}
+        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFE6B8B7' }, 'bgColor': { indexed: '64' }}
       },
       '4': {
         'h1Color': {'type': 'solid', 'fgColor': { rgb: 'FFE26B0A' }, 'bgColor': { rgb: 'FFFFFFFF' }},
-        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFFABF8F' }, 'bgColor': '64'}
+        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFFABF8F' }, 'bgColor': { indexed: '64' }}
       },
       '5': {
         'h1Color': {'type': 'solid', 'fgColor': { rgb: 'FF595959' }, 'bgColor': { rgb: 'FFFFFFFF' }},
-        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFD9D9D9' }, 'bgColor': '64'}
+        'h2Color': {'type': 'solid', 'fgColor': { rgb: 'FFD9D9D9' }, 'bgColor': { indexed: '64' }}
       }
     },
     sheet2: {
@@ -84,8 +84,8 @@ var Config = {
       bdyBorder: {left: 'thin', top: 'thin', right: 'thin', bottom: 'thin'},
       hdFont: {name: 'Calibri', sz: '12', family: '2', scheme: 'minor', color:{ rgb: 'FF000000' }},
       bdyFont: {name: 'Calibri', sz:'10', family:'2', scheme:'minor', color:{ rgb: 'FFFFFFFF' }},
-      hdColor: {'type': 'solid', 'fgColor': { rgb: 'FFE26B0A' }, 'bgColor': '64'},
-      bdyColor: {'type': 'solid', 'fgColor': { rgb: 'FFDDD9C4' }, 'bgColor': '64'}
+      hdColor: {'type': 'solid', 'fgColor': { rgb: 'FFE26B0A' }, 'bgColor': { indexed: '64' }},
+      bdyColor: {'type': 'solid', 'fgColor': { rgb: 'FFDDD9C4' }, 'bgColor': { indexed: '64' }}
     },
     txtOverflow: 2
   }
