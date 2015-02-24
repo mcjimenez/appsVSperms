@@ -19,9 +19,11 @@ var types = {
   '1': [],
   '2': [],
   '3': [],
-  '4': []
+  '4': [],
+  '5': []
 };
 var sortedPerms = [];
+var permErrors = [];
 
 var initialized = false;
 
@@ -93,6 +95,7 @@ function createHeaders() {
     types['' + tp].push(name);
     permissions[name] = { 'target': target, apps: [] };
   }
+  types['5'] = permErrors;
 }
 
 function addApps() {
@@ -101,13 +104,17 @@ function addApps() {
       var manifestDir = path.join(dir, file, 'manifest.webapp');
       try {
         var manifest = JSON.parse(fs.readFileSync(manifestDir));
-        apps[manifest.name] = [];
+        //apps[manifest.name] = [];
+        apps[file] = [];
         for (var perm in manifest.permissions) {
           if (permissions.hasOwnProperty(perm)) {
-            apps[manifest.name].push(perm);
-            permissions[perm].apps.push(manifest.name);
+            //apps[manifest.name].push(perm);
+            apps[file].push(perm);
+            //permissions[perm].apps.push(manifest.name);
+            permissions[perm].apps.push(file);
           } else {
-            apps[manifest.name].push(config.show.appPermError + perm);
+            //apps[manifest.name].push(config.show.appPermError + perm);
+            apps[file].push(perm);
           }
         }
       } catch (e) {
@@ -207,7 +214,7 @@ function fillXLSXHead1(sheet) {
     sheet.font(col, 1, h1Font);
     sheet.align(col, 1, h1Align);
     sheet.merge({col: col, row: 1}, {col: (col + perms.length - 1), row: 1});
-    sheet.fill(col, 1, config.xlsx.sheet1['' + h1].h1Color);
+    var h1Color = config.xlsx.sheet1['' + h1].h1Color;
     var h2Color = config.xlsx.sheet1['' + h1].h2Color;
     for (var h2 = 0, lH2 = perms.length; h2 < lH2; h2++) {
       sheet.width(col + h2, colWidth);
@@ -216,11 +223,14 @@ function fillXLSXHead1(sheet) {
       sheet.valign(col + h2, 2, h2Valign);
       sheet.align(col + h2, 2, h2Align);
       sheet.rotate(col + h2, 2, 90);
-      sheet.border(col + h2, 2,
-        h2 === 0 ? h2BorderFst: h2 === perms.length - 1 ? h2BorderLst: h2Border);
-
+      sheet.border(col + h2, 2, h2Border);
+      var kk = col + h2;
+      // Even if we're going to join the cells, we need to do this here also
+      sheet.fill(col + h2, 1, config.xlsx.sheet1['' + h1].h1Color);
       sheet.fill(col + h2, 2, h2Color);
+      // Even if we're going to join the cells, we need to do this here also
       sheet.border(col + h2, 1, h1Border);
+      sheet.fill(col + h2, 1, h1Color);
     }
     if (h1 < l - 1) {
       col += types['' + h1].length;
@@ -232,21 +242,25 @@ function fillXLSXBody1(sheet) {
   var row = 3;
   var maxAppLength = 0;
   var checked = nTables === 2 && config.show.checked || undefined;
-
+  var error = config.show.error;
   var border = config.xlsx.sheet1.bdyBorder;
   var align = config.xlsx.sheet1.bdyAlign;
   var font = config.xlsx.sheet1.bdyFont;
-
+  var color = config.xlsx.sheet1.bdyColorFst;
   for (var app in apps) {
     if (app.length > maxAppLength) {
       maxAppLength = app.length;
     }
     sheet.set(1, row, app);
+    sheet.fill(1, row, color);
     for (var i = 0, l = sortedPerms.length; i < l; i++) {
       sheet.border(i + 2, row, border);
-      if (apps[app].indexOf(sortedPerms[i]) >= 0) {
+      var prmName = sortedPerms[i];
+      if (apps[app].indexOf(prmName) >= 0) {
         sheet.set(i + 2, row,
-                  checked || permissions[sortedPerms[i]].target);
+                  checked ||
+                  permissions[prmName] && permissions[prmName].target ||
+                  error);
         sheet.font(i + 2, row, font);
         sheet.align(i + 2, row, align);
       }
@@ -263,7 +277,9 @@ function fillXLSXHead2(sheet) {
   var align = config.xlsx.sheet2.hdAlign;
   var font =  config.xlsx.sheet2.hdFont;
   var color = config.xlsx.sheet2.hdColor;
-  for (var i = 0, l = Object.keys(types).length - 1; i < l; i++) {
+  // We've added two more types: None and Error.
+  // They are not defined in gecko
+  for (var i = 0, l = Object.keys(types).length - 2; i < l; i++) {
     if (config.show['' + i].length > maxColWidth) {
       maxColWidth = config.show['' + i].length;
     }
@@ -319,6 +335,17 @@ function fillXLSXBody2(sheet) {
   sheet.width(1, (maxPrmLength + config.xlsx.txtOverflow));
 }
 
+function initPermissionError() {
+  for (var app in apps) {
+    var prms = apps[app];
+    prms.forEach(function(prm) {
+      if (!(prm in permissions) && permErrors.indexOf(prm) < 0) {
+        permErrors.push(prm);
+      }
+    });
+  }
+}
+
 function generateXlsx() {
   var xlsx = config.xlsx;
   fs.unlink(xlsx.path + PATH_SEP + xlsx.name, function (err) {
@@ -330,9 +357,10 @@ function generateXlsx() {
   var excelbuilder = require('msexcel-builder');
   var workbook = excelbuilder.createWorkbook(xlsx.path,
                                              xlsx.name);
+  initPermissionError();
   var sheet1 = workbook.createSheet(xlsx.sheet1.name,
-                                    Object.keys(permissions).length + 1,
-                                    Object.keys(apps).length + 2);
+                     Object.keys(permissions).length + permErrors.length + 1,
+                     Object.keys(apps).length + 2);
 
   fillXLSXHead1(sheet1);
   fillXLSXBody1(sheet1);
