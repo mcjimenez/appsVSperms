@@ -2,19 +2,15 @@
 
 ## Prerequisites
 
-appsVSperm needs msexcel-builder package
+appsVSperm needs the msexcel-builder package
 
 ```
 $ npm install
 ```
 
-msexcel-builder node package has some bugs fixed in this project. To install it (expecially recommended if you want to set spreadsheet colours):
+msexcel-builder node package has some bugs fixed in this project. So until the fixes are added upstream, the package.json is pointing to my own fork.
 
-```
-$ npm run postInstall
-```
-
-appsVSperm needs gaia Repo
+appsVSperm needs the FirefoxOS gaia repo cloned
 
 ```
 $ cd <directory where_gaia_will_be_cloned>
@@ -25,15 +21,15 @@ $ git clone https://github.com/mozilla-b2g/gaia.git
 
 Edit config.js for configure the app.
 
-For minimum configuration set the correct values to:
+For the minimum configuration set the correct values to:
 - gaiaAppsDir: Directories where find apps to process
 - csv.out: Fullname csv output file (only necessary if you want to generate a csv file)
-- xlsx.path: Dirname of xlsx output file
-- xlsx.name: Basename of xlsx output file
+- xlsx.path: Dirname of the xlsx output file
+- xlsx.name: Basename of the xlsx output file
 - xlsx.sheet1.name: Sheet 1 name
 - xlsx.sheet2.name: Sheet 2 name
 
-To generate spreadsheet:
+To generate the spreadsheet:
 
 ```
 $ node main.js [options]
@@ -43,12 +39,12 @@ options:
 
    --h | --help: Show help
 
-   --oneSheet | --one | one: Show information in one table
+   --oneSheet | --one | one: Generate all the information in one sheet.
       each cell contains four letters which symbolise App, Trusted, Privileged,
       and Certified access way with the values D (for deny), P (for prompt) and
       A (for allow)
 
-  --twoSheet | --two | two: Show two tables:
+  --twoSheet | --two | two: Generate two sheets:
         appsVsPermissions and permissionsVSgrandPermissionMode
 
   --csv | csv: output file in CSV format
@@ -56,4 +52,4 @@ options:
   --xlsx | xlsx: output file in XLSX format
 
 
-All information in two table and XLSX format by default
+The default behavior is to generate two sheets and use XLSX format.
