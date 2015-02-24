@@ -26,13 +26,13 @@ var Config = {
     '5': 'Error',
     appPermError: '****'
   },
-  gaiaAppsDir: ['/home/mcjimenez/dev/gaia/apps', '/home/mcjimenez/dev/gaia/outoftree_apps'],
+  gaiaAppsDir: ['/home/cjc/dev/gaiaDEV/apps', '/home/cjc/dev/gaiaDEV/outoftree_apps'],
   csv: {
-    out: '/home/mcjimenex/tmp/dani/pruebas/appsVSperms.csv',
+    out: '/tmp/appsVSperms.csv',
     sep: ';'
   },
   xlsx: {
-    path: '/media/sf_TEMP/excel',
+    path: '/tmp',
     name: 'appsVSperms.xlsx',
     sheet1: {
       name: 'appsVSperms',

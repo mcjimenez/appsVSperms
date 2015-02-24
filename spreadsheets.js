@@ -208,7 +208,11 @@ function fillXLSXHead1(sheet) {
   var col = 2;
   for (var h1 = 0, l = Object.keys(types).length; h1 < l; h1++) {
     var perms = types['' + h1];
-    sortedPerms = sortedPerms.concat(types['' + h1]);
+    if (!perms.length) {
+      continue;
+    }
+    sortedPerms = sortedPerms.concat(perms);
+
     var shw = config.xlsx['' + h1];
     sheet.set(col, 1, config.show['' + h1]);
     sheet.font(col, 1, h1Font);
@@ -224,9 +228,6 @@ function fillXLSXHead1(sheet) {
       sheet.align(col + h2, 2, h2Align);
       sheet.rotate(col + h2, 2, 90);
       sheet.border(col + h2, 2, h2Border);
-      var kk = col + h2;
-      // Even if we're going to join the cells, we need to do this here also
-      sheet.fill(col + h2, 1, config.xlsx.sheet1['' + h1].h1Color);
       sheet.fill(col + h2, 2, h2Color);
       // Even if we're going to join the cells, we need to do this here also
       sheet.border(col + h2, 1, h1Border);
@@ -358,9 +359,10 @@ function generateXlsx() {
   var workbook = excelbuilder.createWorkbook(xlsx.path,
                                              xlsx.name);
   initPermissionError();
+  var errorsLng = permErrors.length || 1;
   var sheet1 = workbook.createSheet(xlsx.sheet1.name,
-                     Object.keys(permissions).length + permErrors.length + 1,
-                     Object.keys(apps).length + 2);
+                 Object.keys(permissions).length + (permErrors.length || 1) + 1,
+                 Object.keys(apps).length + 2);
 
   fillXLSXHead1(sheet1);
   fillXLSXBody1(sheet1);
