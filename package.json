@@ -12,11 +12,12 @@
     "url": "https://github.com/mcjimenez/appsVSperms"
   },
   "dependencies": {
-    "msexcel-builder": "0.0.*"
+    "msexcel-builder": "0.0.2"
   },
   "license": "",
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "postInstall": "cp patch/node_modules/msexcel-builder/lib/msexcel-builder.js node_modules/msexcel-builder/lib/"
   },
   "main": "main.js"
 }
