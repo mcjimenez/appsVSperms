@@ -8,7 +8,7 @@ appsVSperm needs msexcel-builder package
 $ npm install
 ```
 
-This node package has some bugs fixed in this project. To install it:
+msexcel-builder node package has some bugs fixed in this project. To install it (expecially recommended if you want to set spreadsheet colours):
 
 ```
 $ npm run postInstall
@@ -32,6 +32,8 @@ For minimum configuration set the correct values to:
 - xlsx.name: Basename of xlsx output file
 - xlsx.sheet1.name: Sheet 1 name
 - xlsx.sheet2.name: Sheet 2 name
+
+To generate spreadsheet:
 
 ```
 $ node main.js [options]
